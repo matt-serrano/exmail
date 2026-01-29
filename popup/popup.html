@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExMail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+      <p>Loading ExMail...</p>
+    </div>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="auth-screen hidden">
+      <div class="auth-content">
+        <div class="auth-logo">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="url(#gradient)"/>
+            <path d="M16 20L32 34L48 20M16 44V20H48V44H16Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="64" y2="64">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="auth-title">ExMail</h1>
+        <p class="auth-subtitle">Manage your Gmail without leaving your browser</p>
+        <button id="sign-in-btn" class="btn btn-primary btn-large">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M18.171 8.368h-.671v-.035H10v3.333h4.709A4.998 4.998 0 015 10a5 5 0 015-5c1.275 0 2.434.48 3.317 1.266l2.357-2.357A8.295 8.295 0 0010 1.667a8.333 8.333 0 108.171 6.701z" fill="#FFC107"/>
+            <path d="M2.627 6.121l2.74 2.009A4.998 4.998 0 0110 5c1.275 0 2.434.48 3.317 1.266l2.357-2.357A8.295 8.295 0 0010 1.667a8.329 8.329 0 00-7.373 4.454z" fill="#FF3D00"/>
+            <path d="M10 18.333a8.294 8.294 0 005.587-2.163l-2.579-2.183A4.963 4.963 0 0110 15a4.998 4.998 0 01-4.701-3.306l-2.72 2.095A8.327 8.327 0 0010 18.333z" fill="#4CAF50"/>
+            <path d="M18.171 8.368H17.5v-.035H10v3.333h4.709a5.015 5.015 0 01-1.703 2.321l2.58 2.182c-.182.166 2.747-2.002 2.747-6.17 0-.559-.057-1.104-.162-1.631z" fill="#1976D2"/>
+          </svg>
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="main-app hidden">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <h1 class="header-title">ExMail</h1>
+        </div>
+        <div class="header-right">
+          <button id="refresh-btn" class="icon-btn" title="Refresh">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+          </button>
+          <button id="settings-btn" class="icon-btn" title="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search emails...">
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="inbox">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+            <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>
+          </svg>
+          Inbox
+        </button>
+        <button class="filter-tab" data-filter="unread">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          </svg>
+          Unread
+        </button>
+        <button class="filter-tab" data-filter="starred">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          Starred
+        </button>
+      </div>
+
+      <!-- Email List -->
+      <div id="email-list" class="email-list">
+        <!-- Emails will be rendered here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state hidden">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        <h3>No emails found</h3>
+        <p>Your inbox is empty or no emails match your filter</p>
+      </div>
+
+      <!-- Compose FAB -->
+      <button id="compose-btn" class="fab" title="Compose new email">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Email View Modal -->
+    <div id="email-view-modal" class="modal hidden">
+      <div class="modal-content email-view">
+        <div class="modal-header">
+          <button id="email-back-btn" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+          <div class="email-actions">
+            <button id="email-reply-btn" class="icon-btn" title="Reply">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 17 4 12 9 7"/>
+                <path d="M20 18v-2a4 4 0 00-4-4H4"/>
+              </svg>
+            </button>
+            <button id="email-forward-btn" class="icon-btn" title="Forward">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 17 20 12 15 7"/>
+                <path d="M4 18v-2a4 4 0 014-4h12"/>
+              </svg>
+            </button>
+            <button id="email-star-btn" class="icon-btn" title="Star">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </button>
+            <button id="email-delete-btn" class="icon-btn" title="Delete">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div id="email-content" class="email-content">
+          <!-- Email content will be rendered here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Compose Modal -->
+    <div id="compose-modal" class="modal hidden">
+      <div class="modal-content compose-view">
+        <div class="modal-header">
+          <h2 id="compose-title">New Message</h2>
+          <button id="compose-close-btn" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <form id="compose-form" class="compose-form">
+          <div class="form-group">
+            <label for="compose-to">To</label>
+            <input type="email" id="compose-to" required placeholder="recipient@example.com">
+          </div>
+          <div class="form-group">
+            <label for="compose-subject">Subject</label>
+            <input type="text" id="compose-subject" placeholder="Email subject">
+          </div>
+          <div class="form-group form-group-grow">
+            <label for="compose-body">Message</label>
+            <textarea id="compose-body" required placeholder="Write your message here..."></textarea>
+          </div>
+          <div class="compose-actions">
+            <button type="button" id="compose-discard-btn" class="btn btn-ghost">Discard</button>
+            <button type="submit" id="compose-send-btn" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="settings-panel hidden">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button id="settings-close-btn" class="icon-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="settings-content">
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <div class="settings-option">
+            <span>Theme</span>
+            <select id="theme-select">
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Notifications</h3>
+          <div class="settings-option">
+            <span>New email notifications</span>
+            <label class="toggle">
+              <input type="checkbox" id="notifications-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Sync</h3>
+          <div class="settings-option">
+            <span>Refresh interval</span>
+            <select id="refresh-interval-select">
+              <option value="1">1 minute</option>
+              <option value="5" selected>5 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Account</h3>
+          <div id="account-info" class="account-info">
+            <div class="account-avatar" id="account-avatar">?</div>
+            <div class="account-details">
+              <span id="account-email">Loading...</span>
+            </div>
+          </div>
+          <button id="sign-out-btn" class="btn btn-danger">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
